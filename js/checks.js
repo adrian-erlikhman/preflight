@@ -477,7 +477,7 @@ function checkHttps(report, base) {
 function describeFetchFailure(record) {
   if (record.corsBlocked) {
     return {
-      detail: "The server answered, but the browser blocked Preflight from reading the file: the response has no Access-Control-Allow-Origin header that allows other sites.",
+      detail: "The server answered, but the browser blocked Preflight from reading the response: it has no Access-Control-Allow-Origin header that allows other sites. The browser also hides the status code, so the file may be missing as well.",
       fix: "Serve the public agent files (agent-manifest.json, the network file, links.json) with the header Access-Control-Allow-Origin: *. GitHub Pages does this already; on Netlify use a _headers file, on Apache a .htaccess rule.",
     };
   }
@@ -1067,19 +1067,19 @@ async function checkChallenge(report, base, manifest, fetchImpl) {
   }
   report.add({
     id: "challenge.public_url", group: "challenge", section: "challenge", level: "info",
-    status: page.ok ? "pass" : "warn",
+    status: page.ok ? "pass" : "info",
     title: "A public page at the site URL",
     detail: page.ok ? "The site URL returns a page." : "Preflight could not read a page at the site URL from another origin. Judges open it in a normal browser, so this may still be fine.",
   });
   report.add({
     id: "challenge.json", group: "challenge", section: "challenge", level: "info",
-    status: report.files.some((f) => f.role === "network" && f.ok) ? "pass" : "warn",
+    status: report.files.some((f) => f.role === "network" && f.ok) ? "pass" : "info",
     title: "A public .json file describing the agent network",
     detail: report.files.some((f) => f.role === "network" && f.ok) ? "Found and readable." : "Not found or not readable from another origin.",
   });
   report.add({
     id: "challenge.runtime", group: "challenge", section: "challenge", level: "info",
-    status: runtime ? "pass" : page.ok ? "warn" : "info",
+    status: runtime ? "pass" : "info",
     title: "A runtime that runs the network in the browser",
     detail: runtime ? "The page loads an agent runtime." : page.ok ? "The page does not seem to load a browser runtime. Preflight looks for runtime/index.js or a boot() call." : "Not checked: the page was not readable.",
   });
