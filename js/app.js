@@ -273,7 +273,7 @@ class PreflightPage {
 
   renderCheck(c) {
     const sectionInfo = SECTIONS[c.section];
-    const item = el("li", { class: `check ${c.status}` },
+    const item = el("li", { class: `check ${c.status}`, "data-check": c.id },
       el("div", { class: "check-head" },
         el("span", { class: `pill ${c.status}`, text: STATUS_LABEL[c.status] }),
         el("span", { class: "check-title", text: c.title }),

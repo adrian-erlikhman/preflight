@@ -18,10 +18,10 @@ An agentic website is only part of the agentic web if another site can load it. 
 on details you cannot see from your own origin: CORS on the manifest and network file, a
 `front_man` that matches the agent the runtime actually starts from, peer URLs that end in a
 network name, a peer policy that allows the peers you reference, private-context rules,
-and no keys in published files. When we tested the agentic-web repository's own examples
-from a second origin, the reference runtime would not load a network whose manifest declares
-page actions but no action bridge: it waits about 10 seconds, then asks the visitor to open a
-window on the other site. Preflight finds these problems before other sites do.
+and no keys in published files. When we loaded the agentic-web repository's pizza example
+from a second origin, the reference runtime would not load it: its manifest declares page
+actions but no action bridge, so the runtime waits about 10 seconds, then asks the visitor to
+open a window on the other site. Preflight finds these problems before other sites do.
 
 ## What it checks
 

@@ -78,7 +78,11 @@ class ScriptedRouter(BaseHTTPRequestHandler):
                 if name not in called:
                     return sse(self, call(name, args, step))
             last = messages[-1]["content"] if messages[-1]["role"] == "tool" else ""
-            return sse(self, say("Live test done. The peer answered: " + str(last)[:200]))
+            try:
+                answer = json.loads(last).get("text", last)
+            except (ValueError, AttributeError):
+                answer = last
+            return sse(self, say("Live test done. spec_helper loaded as a peer and answered: \u201c" + str(answer)[:240] + "\u201d"))
         if agent == "spec_helper":
             return sse(self, say("agent-manifest.json lists each network with name, front_man and hocon, plus the LLM router and peer policy (section 3.3)."))
         return sse(self, say("ok"))
