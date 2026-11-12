@@ -1,0 +1,81 @@
+{
+  "brand": "Preflight",
+  "networks": [
+    {
+      "name": "preflight",
+      "front_man": "preflight_inspector",
+      "hocon": "./preflight.network.json",
+      "description": "Checks an open agentic website against the Worldwide Agentic Web MVP spec, explains each failure, writes corrected files, and runs the checked network as a peer.",
+      "tags": [
+        "conformance",
+        "developer-tools",
+        "agentic-web"
+      ],
+      "sample_queries": [
+        "Check https://cdn.jsdelivr.net/gh/adrian-erlikhman/preflight@main/fixtures/common-mistakes/ and tell me what to fix first.",
+        "Why must the manifest's front_man match the agent the runtime starts from?",
+        "Write a corrected agent-manifest.json for https://cdn.jsdelivr.net/gh/adrian-erlikhman/preflight@main/fixtures/common-mistakes/",
+        "Check https://cdn.jsdelivr.net/gh/adrian-erlikhman/preflight@main/peer/spec_helper and run it live as a peer.",
+        "Upload the fixed files to my site for me."
+      ]
+    }
+  ],
+  "llm_router": {
+    "base_url": "https://api.otari.ai/api/v1",
+    "mock": false,
+    "byok_router": "https://api.otari.ai/api/v1"
+  },
+  "allowed_peers": [],
+  "peer_policy": {
+    "mode": "open",
+    "deny_origins": [],
+    "note": "Preflight loads the network a developer asks it to test. The runtime asks the visitor before each contact with another origin."
+  },
+  "agent_mcp": {
+    "protocol": "nsdeploy-agent-mcp/v1",
+    "network": "preflight",
+    "front_man": "preflight_inspector",
+    "available": false,
+    "reason": "This is a static bundle; a public MCP facade requires an application host."
+  },
+  "theme": {
+    "primary": "#1e47c8"
+  },
+  "linking": {
+    "protocol": "nsdeploy-link/v1",
+    "exports": [
+      {
+        "network": "preflight",
+        "front_man": "preflight_inspector",
+        "aliases": [
+          "preflight",
+          "preflight_inspector"
+        ],
+        "url": "preflight"
+      }
+    ],
+    "imports": [],
+    "link_updates": {
+      "mode": "browser-local"
+    }
+  },
+  "deployment": {
+    "mode": "static",
+    "self_contained_runtime": true,
+    "browser_mock": false,
+    "direct_byok": true,
+    "direct_mcp_requires_cors": true,
+    "public_mcp_facade": false
+  },
+  "actions": {
+    "version": 1,
+    "module": "./site-actions.js",
+    "agentTools": [
+      "run_preflight",
+      "get_report",
+      "get_file",
+      "get_spec_section",
+      "prepare_live_test"
+    ]
+  }
+}

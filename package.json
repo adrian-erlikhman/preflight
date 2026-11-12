@@ -1,0 +1,17 @@
+{
+  "name": "preflight",
+  "version": "1.0.0",
+  "description": "Checks an open agentic website against the Worldwide Agentic Web MVP spec, the way another site's browser will load it.",
+  "type": "module",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "test": "node --test \"tests/*.test.mjs\"",
+    "test:browser": "python3 tests/e2e/test_browser.py",
+    "build": "node tools/build_network.mjs preflight.hocon --manifest agent-manifest.json --runtime runtime && node tools/build_network.mjs peer/spec_helper.hocon --manifest peer/agent-manifest.json --runtime runtime",
+    "serve": "python3 -m http.server 8080 --bind 127.0.0.1"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

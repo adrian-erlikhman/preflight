@@ -1,0 +1,18 @@
+{
+  "protocol": "nsdeploy-link/v1",
+  "exports": [
+    {
+      "network": "spec_helper",
+      "front_man": "spec_helper",
+      "aliases": [
+        "spec_helper",
+        "agentic_web_spec"
+      ],
+      "url": "spec_helper"
+    }
+  ],
+  "imports": [],
+  "link_updates": {
+    "mode": "browser-local"
+  }
+}

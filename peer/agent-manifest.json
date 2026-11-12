@@ -1,0 +1,67 @@
+{
+  "brand": "Preflight spec helper",
+  "networks": [
+    {
+      "name": "spec_helper",
+      "front_man": "spec_helper",
+      "hocon": "./spec_helper.network.json",
+      "description": "Answers questions about the Worldwide Agentic Web MVP spec (profile 0.2) and drafts the files an open agentic website must publish.",
+      "tags": [
+        "agentic-web",
+        "spec",
+        "portable"
+      ],
+      "sample_queries": [
+        "What must agent-manifest.json contain?",
+        "How does a site load another site's network as a peer?",
+        "Draft a minimal agent-manifest.json and links.json for a network named trail_guide.",
+        "Which requirement says my API key must never reach a peer site?",
+        "Check my live website for me."
+      ]
+    }
+  ],
+  "llm_router": {
+    "base_url": "https://api.otari.ai/api/v1",
+    "mock": false,
+    "byok_router": "https://api.otari.ai/api/v1"
+  },
+  "allowed_peers": [],
+  "peer_policy": {
+    "mode": "closed",
+    "deny_origins": [],
+    "note": "spec_helper calls no other sites. Callers run it with their own router and key."
+  },
+  "agent_mcp": {
+    "protocol": "nsdeploy-agent-mcp/v1",
+    "network": "spec_helper",
+    "front_man": "spec_helper",
+    "available": false,
+    "reason": "This is a static bundle; a public MCP facade requires an application host."
+  },
+  "linking": {
+    "protocol": "nsdeploy-link/v1",
+    "exports": [
+      {
+        "network": "spec_helper",
+        "front_man": "spec_helper",
+        "aliases": [
+          "spec_helper",
+          "agentic_web_spec"
+        ],
+        "url": "spec_helper"
+      }
+    ],
+    "imports": [],
+    "link_updates": {
+      "mode": "browser-local"
+    }
+  },
+  "deployment": {
+    "mode": "static",
+    "self_contained_runtime": false,
+    "browser_mock": false,
+    "direct_byok": true,
+    "direct_mcp_requires_cors": true,
+    "public_mcp_facade": false
+  }
+}

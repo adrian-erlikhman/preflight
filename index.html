@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Preflight: check an open agentic website before other sites load it</title>
+  <meta name="description" content="Preflight checks an open agentic website against the Worldwide Agentic Web MVP spec from a different origin, then explains each failure, writes the fix, and can run your network as a peer.">
+  <meta property="og:title" content="Preflight for the open agentic web">
+  <meta property="og:description" content="Check your agent site the way another site's browser will load it.">
+  <meta property="og:image" content="https://adrian-erlikhman.github.io/preflight/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+  <script type="module" src="js/app.js"></script>
+  <script type="module" src="site.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to the check</a>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="./" aria-label="Preflight home">
+        <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><rect x="1" y="1" width="30" height="30" rx="8"/><path d="M9 16.5l4.5 4.5L23 11.5"/></svg>
+        <span>Preflight</span>
+      </a>
+      <nav aria-label="Site">
+        <a href="#how">How it works</a>
+        <a href="#for-agents">For other sites</a>
+        <a href="https://github.com/cognizant-ai-labs/agentic-web/blob/main/docs/worldwide_agentic_web_mvp_spec.md" target="_blank" rel="noopener noreferrer">The spec</a>
+        <a href="https://github.com/adrian-erlikhman/preflight" target="_blank" rel="noopener noreferrer">Source</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero wrap" aria-labelledby="hero-title">
+      <p class="eyebrow">Open agentic web · MVP profile 0.2</p>
+      <h1 id="hero-title">Will other sites be able to run your agents?</h1>
+      <p class="lede">Preflight reads your agent site from a different origin, the way a peer site's browser will, and checks it against the Worldwide Agentic Web spec with the reference runtime's own validator. Its assistant then explains each failure, writes the fix, and can load your network as a peer to test it live.</p>
+
+      <form id="check-form" class="check-form" novalidate>
+        <label for="site-url" class="field-label">Agentic website URL</label>
+        <div class="field-row">
+          <input id="site-url" name="url" type="url" inputmode="url" autocomplete="url" spellcheck="false" required
+                 placeholder="https://your-site.example/  or  https://your-site.example/agents/network_name"
+                 aria-describedby="url-help">
+          <button id="run" class="button primary" type="submit">Run preflight</button>
+        </div>
+        <p id="url-help" class="help">The site base, a page on it, its agent-manifest.json, or a peer-network URL ending in the network name. Preflight sends plain GET requests with no cookies, and asks before it contacts any other site.</p>
+        <label class="option"><input id="deep" type="checkbox"> Also check that the peer networks it links to are published (asks before each one)</label>
+      </form>
+
+      <div class="examples" role="group" aria-label="Examples to try">
+        <span class="examples-label">Try</span>
+        <button type="button" class="chip" data-example="https://cdn.jsdelivr.net/gh/cognizant-ai-labs/agentic-web@3c189186276dbd39bf47757e462cb2f88d6b16bf/examples/pizza_restaurant_agentified/">Official pizza example</button>
+        <button type="button" class="chip" data-example="https://cdn.jsdelivr.net/gh/cognizant-ai-labs/agentic-web@3c189186276dbd39bf47757e462cb2f88d6b16bf/examples/guesthouse_agentified/">Official guesthouse example</button>
+        <button type="button" class="chip" data-example="https://cdn.jsdelivr.net/gh/adrian-erlikhman/preflight@main/fixtures/common-mistakes/">Common mistakes (sample)</button>
+        <button type="button" class="chip" data-example="https://cdn.jsdelivr.net/gh/adrian-erlikhman/preflight@main/peer/spec_helper">Preflight's portable network</button>
+        <button type="button" class="chip" data-example="./">This site</button>
+      </div>
+      <p id="check-status" class="check-status" role="status" aria-live="polite"></p>
+    </section>
+
+    <section id="report" class="report wrap" hidden aria-labelledby="report-title">
+      <div id="report-head" class="report-head"></div>
+      <div class="report-grid">
+        <aside class="report-side" aria-label="Summary">
+          <ul id="verdicts" class="verdicts"></ul>
+          <div id="counts" class="counts"></div>
+          <div class="side-actions">
+            <button id="live-test" type="button" class="button primary block" aria-describedby="live-note">Test it live as a peer</button>
+            <p id="live-note" class="live-note"></p>
+            <button id="copy-md" type="button" class="button block">Copy Markdown report</button>
+            <button id="download-json" type="button" class="button block">Download JSON</button>
+            <button id="copy-badge" type="button" class="button block">Copy README badge</button>
+          </div>
+          <p id="toast" class="toast" role="status" aria-live="polite"></p>
+        </aside>
+        <div class="report-main">
+          <div id="groups"></div>
+          <section id="files" class="files" aria-labelledby="files-title">
+            <h3 id="files-title">Files read</h3>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th scope="col">Role</th><th scope="col">File</th><th scope="col">Result</th><th scope="col" class="num">Time</th></tr></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <section id="assistant" class="assistant wrap" aria-labelledby="assistant-heading">
+      <div class="assistant-intro">
+        <p class="eyebrow">Agent network · runs in your browser</p>
+        <h2 id="assistant-heading">Ask Preflight</h2>
+        <p>Ask why a check failed, get a corrected agent-manifest.json or network file, or have Preflight load the checked network as a peer and send it a question. It reads the report on this page and quotes the spec.</p>
+        <p class="assistant-note">This is itself an open agentic website: a two-agent network published in <a class="mono" href="agent-manifest.json">agent-manifest.json</a>, run by the reference browser runtime. Your messages and the report go only to the LLM provider you choose in the settings below, with your own key. Before it contacts another site, the browser asks you.</p>
+      </div>
+      <p id="assistant-status" class="assistant-status" role="status">Connecting the assistant… If this stays, the assistant could not load. The checks above still work.</p>
+      <div id="agent-app">
+        <div data-ns-slot="header"></div>
+        <div class="assistant-panels">
+          <div data-ns-slot="chat"></div>
+          <div data-ns-slot="agents"></div>
+        </div>
+        <div data-ns-slot="settings"></div>
+      </div>
+    </section>
+
+    <section id="how" class="how wrap" aria-labelledby="how-title">
+      <h2 id="how-title">How it works</h2>
+      <div class="how-grid">
+        <article>
+          <h3>Reads your site like a peer</h3>
+          <p>A site that loads your agents fetches your manifest and network file from its own origin. Preflight does the same: cross-origin, no cookies, CORS enforced by the browser. When a file is blocked, it tells a missing CORS header apart from a missing file.</p>
+        </article>
+        <article>
+          <h3>Validates with the reference runtime</h3>
+          <p>Each network is parsed and validated by the same code the reference browser runtime runs, then checked against every requirement in the spec that a published site can be tested for: files, front agent, schemas, peer URLs, peer policy, private context and credentials.</p>
+        </article>
+        <article>
+          <h3>Explains and tests live</h3>
+          <p>The assistant turns failures into plain fixes and corrected files. With your consent it loads the checked network as a peer and runs it here, with your router and key. The key goes only to your router, never to the site under test.</p>
+        </article>
+      </div>
+      <h3 class="how-sub">What a pass means</h3>
+      <ul class="means">
+        <li><strong>Publishes a valid network:</strong> manifest and network file exist, parse, and pass the runtime's validator, with a front agent that matches.</li>
+        <li><strong>Readable from other origins:</strong> both files load cross-origin, so a caller's browser can fetch them.</li>
+        <li><strong>Runs when another site loads it:</strong> the network is data only and does not depend on actions that exist only on your page.</li>
+        <li><strong>No credentials in public files:</strong> no API keys, tokens or passwords in anything you publish.</li>
+      </ul>
+      <p class="fine">Preflight checks what a published site can show from the outside. It cannot see server-side code, response headers the browser hides, or how a runtime behaves under load. Required and recommended levels follow the spec's MUST and SHOULD.</p>
+    </section>
+
+    <section id="for-agents" class="for-agents wrap" aria-labelledby="for-agents-title">
+      <h2 id="for-agents-title">For other agentic websites</h2>
+      <p>Preflight publishes a second, portable network for other sites to load as a peer. <span class="mono">spec_helper</span> answers questions about the MVP spec and drafts the files it requires. It does not depend on this page, so it runs the same way in any caller's browser.</p>
+      <pre class="code"><code>"tools": ["https://adrian-erlikhman.github.io/preflight/peer/spec_helper"]</code></pre>
+      <p class="fine">Add that URL to one of your agents' tools, and its origin to your manifest's <span class="mono">allowed_peers</span>. Your visitors' router and key run it; nothing is sent to this site.</p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <p>Built by Adrian Erlikhman and Michael Tarekegn for the Open Agentic Web Challenge. MIT licensed.</p>
+      <p>Checks follow the <a href="https://github.com/cognizant-ai-labs/agentic-web" target="_blank" rel="noopener noreferrer">Worldwide Agentic Web MVP spec</a> (profile 0.2) by Cognizant AI Lab. The browser runtime and spec copy are Apache 2.0.</p>
+    </div>
+  </footer>
+</body>
+</html>

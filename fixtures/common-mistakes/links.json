@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "networks": {
+    "bike_desk": {
+      "trail_conditions": "trails-example"
+    }
+  }
+}

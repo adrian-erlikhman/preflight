@@ -1,0 +1,29 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../css/style.css">
+<style>
+body{margin:0;width:1200px;height:630px;overflow:hidden;background:#fff}
+.card{display:grid;grid-template-columns:1.05fr .95fr;height:630px}
+.l{padding:64px 56px;display:flex;flex-direction:column;justify-content:space-between;border-right:1px solid var(--line)}
+.l h1{font-size:56px;max-width:none;line-height:1.04}
+.l p{font-size:21px;color:var(--ink-2);margin:20px 0 0;line-height:1.5}
+.r{background:var(--bg-2);padding:56px 48px;display:flex;flex-direction:column;justify-content:center;gap:12px}
+.row{display:flex;gap:12px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px;font-weight:600;font-size:17px}
+.row .pill{font-size:12px}
+.site{font:500 15px var(--mono);color:var(--muted);margin-bottom:6px}
+.foot{font:500 14px var(--mono);color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
+</style></head><body>
+<div class="card">
+ <div class="l">
+  <div class="brand"><svg class="brand-mark" viewBox="0 0 32 32" style="width:34px;height:34px"><rect x="1" y="1" width="30" height="30" rx="8"/><path d="M9 16.5l4.5 4.5L23 11.5"/></svg><span style="font-size:24px">Preflight</span></div>
+  <div><h1>Will other sites be able to run your agents?</h1>
+  <p>Checks an open agentic website against the Worldwide Agentic Web MVP spec, from another origin, with the reference runtime's own validator.</p></div>
+  <div class="foot">Open agentic web · MVP profile 0.2</div>
+ </div>
+ <div class="r">
+  <div class="site">fixtures/common-mistakes</div>
+  <div class="row"><span class="pill pass">Pass</span>Readable from other origins</div>
+  <div class="row"><span class="pill fail">Fail</span>Front agent matches the manifest</div>
+  <div class="row"><span class="pill fail">Fail</span>No credentials in agent-manifest.json</div>
+  <div class="row"><span class="pill fail">Fail</span>Private context crosses only by named fields</div>
+  <div class="row"><span class="pill warn">Review</span>Runs when another site loads it</div>
+ </div>
+</div></body></html>

@@ -1,0 +1,20 @@
+{
+  "brand": "Lakeside Bike Rentals (sample with mistakes)",
+  "networks": [
+    {
+      "name": "bike_desk",
+      "front_man": "rental_desk",
+      "hocon": "./bike_desk.network.json",
+      "description": "A deliberately broken sample site for Preflight's demo. Every problem in it is intentional."
+    }
+  ],
+  "llm_router": {
+    "base_url": "https://api.otari.ai/api/v1",
+    "api_key": "demo-key-0000-not-a-real-key"
+  },
+  "actions": {
+    "version": 1,
+    "module": "./site-actions.js",
+    "agentTools": ["get_bikes", "reserve_bike"]
+  }
+}

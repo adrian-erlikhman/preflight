@@ -1,0 +1,18 @@
+{
+  "protocol": "nsdeploy-link/v1",
+  "exports": [
+    {
+      "network": "preflight",
+      "front_man": "preflight_inspector",
+      "aliases": [
+        "preflight",
+        "preflight_inspector"
+      ],
+      "url": "preflight"
+    }
+  ],
+  "imports": [],
+  "link_updates": {
+    "mode": "browser-local"
+  }
+}
